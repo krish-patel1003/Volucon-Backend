@@ -38,6 +38,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('profiles/', include('profiles.urls')),
     path('orgs/', include('organizations.urls')),
+    path('events/', include('events.urls')),
 ]
 
 urlpatterns += [

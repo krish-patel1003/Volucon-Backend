@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'users',
     'profiles',
     'organizations',
+    'events',
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt',
@@ -158,6 +159,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
     )
 }
 

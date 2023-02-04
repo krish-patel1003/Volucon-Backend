@@ -12,8 +12,15 @@ from users.models import User
 
 class VolunteerProfileView(APIView):
     serializer_class = VolunteerProfileSerializer
+    queryset= VolunteerProfile.objects.all()
     permission_classes = [IsAuthenticated]
 
+    # @permission_classes((IsAdminUser,))
+    def get(self, request, format=None):
+        data = VolunteerProfile.objects.all()
+        serializer = self.serializer_class(data, many=True)
+        return Response({"data":data, "msg":"all volunteers"}, status=status.HTTP_200_OK)
+    
     def post(self, request, format=None):
         data = request.data
         serializer = self.serializer_class(data=data)
@@ -26,13 +33,18 @@ class VolunteerProfileView(APIView):
             {"error": serializer.errors, "msg": "Volunteer Profile not created"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class VolunteerProfileUpdate(APIView):
+class VolunteerProfileDetail(APIView):
     serializer_class = VolunteerProfileSerializer
     permission_classes = [IsAuthenticated, IsUserItself]
 
+    def get(self, request, user_id):
+        profile = VolunteerProfile.objects.get(user=request.user)
+        serializer = self.serializer_class(profile)
+        return Response({"data": serializer.data, "msg": "Volunteer"}, status=status.HTTP_200_OK)
+
+
     def patch(self, request, user_id):
-        user = User.objects.get(id=user_id)
-        profile = VolunteerProfile.objects.get(user=user)
+        profile = VolunteerProfile.objects.get(user=request.user)
 
         serializer = VolunteerProfileSerializer(profile, data=request.data, partial=True)
         if serializer.is_valid():
@@ -40,12 +52,3 @@ class VolunteerProfileUpdate(APIView):
             return Response({"data":serializer.data, "msg":"Profile Updated"}, status=status.HTTP_200_OK)
 
         return Response({"error": serializer.errors, "msg":"Invalid Data input"}, status=status.HTTP_400_BAD_REQUEST)
-
-class ListVolunteers(APIView):
-    serializer_class = VolunteerProfileSerializer
-    permission_classes = [IsAdminUser]
-    
-    def get(self, request, format=None):
-        profiles = VolunteerProfile.objects.all()
-        serializer = self.serializer_class(profiles, many=True)
-        return Response({"data":serializer.data, "msg":"list of all Volunteer"}, status=status.HTTP_200_OK)

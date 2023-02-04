@@ -13,8 +13,8 @@ def enforce_csrf(request):
         reason = check_object.process_view(request, None, (), {})
         if reason:
             raise exceptions.PermissionDenied('CSRF Failed: %s' % reason)
-    except Exception as e:
-        print(e)
+    except:
+        pass
 
 
 
