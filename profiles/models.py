@@ -19,7 +19,7 @@ class VolunteerProfile(models.Model):
     first_name = models.CharField(max_length=255, null=True)
     last_name = models.CharField(max_length=255, null=True)
     age = models.IntegerField(null=True)
-    gender = models.CharField(max_length=20 ,choices=gender_choices, default='M')
+    gender = models.CharField(max_length=20 ,choices=gender_choices, default='M', null=True)
     city = models.CharField(max_length=255, null=True)
     state = models.CharField(max_length=255, null=True)
     phone = models.CharField(max_length=255, null=True)

@@ -56,8 +56,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -86,11 +84,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'volucon',
+        'USER': 'krish',
+        'PASSWORD': 'PswQHi3nX4CnfWwDovAiSs9CUYMlqDdg',
+        'HOST': 'postgres://krish:PswQHi3nX4CnfWwDovAiSs9CUYMlqDdg@dpg-cfetkt82i3mg6pe9mqh0-a.singapore-postgres.render.com/volucon',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

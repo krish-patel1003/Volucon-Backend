@@ -1,18 +1,21 @@
+# cookieapp/authenticate.py
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.conf import settings
+
 from rest_framework.authentication import CSRFCheck
 from rest_framework import exceptions
 
 
 def enforce_csrf(request):
-    check = CSRFCheck()
     try:
-        check.process_request(request)
-    except:
-        pass
-    reason = check.process_view(request, None, (), {})
-    if reason:
-        raise exceptions.PermissionDenied(f'CSRF Failed: {reason}')
+        check_object = CSRFCheck()
+        check_object.process_request(request)
+        reason = check_object.process_view(request, None, (), {})
+        if reason:
+            raise exceptions.PermissionDenied('CSRF Failed: %s' % reason)
+    except Exception as e:
+        print(e)
+
 
 
 class CustomAuthentication(JWTAuthentication):
@@ -24,7 +27,6 @@ class CustomAuthentication(JWTAuthentication):
                 settings.SIMPLE_JWT['AUTH_COOKIE']) or None
         else:
             raw_token = self.get_raw_token(header)
-
         if raw_token is None:
             return None
 
