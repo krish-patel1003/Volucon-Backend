@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
+from dotenv import load_dotenv
+from datetime import timedelta
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -84,12 +89,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'volucon',
-        'USER': 'krish',
-        'PASSWORD': 'PswQHi3nX4CnfWwDovAiSs9CUYMlqDdg',
-        'HOST': 'postgres://krish:PswQHi3nX4CnfWwDovAiSs9CUYMlqDdg@dpg-cfetkt82i3mg6pe9mqh0-a.singapore-postgres.render.com/volucon',
-        'PORT': '5432',
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "railway",
+        "USER": "postgres",
+        "PASSWORD": os.getenv('PGPASSWORD'),
+        "HOST": os.getenv('PGHOST'),
+        "PORT": os.getenv('PGPORT'),
     }
 }
 
@@ -128,6 +133,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
