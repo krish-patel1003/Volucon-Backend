@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import User
+
 # Create your models here.
  
 class Skills(models.Model):
@@ -18,6 +19,7 @@ class VolunteerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255, null=True)
     last_name = models.CharField(max_length=255, null=True)
+    profile_pic = models.ImageField(upload_to='volu_profile_pics/', null=True, blank=True)
     age = models.IntegerField(null=True)
     gender = models.CharField(max_length=20 ,choices=gender_choices, default='M', null=True)
     city = models.CharField(max_length=255, null=True)
