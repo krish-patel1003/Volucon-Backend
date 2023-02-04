@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # 
     'users',
+    'profiles',
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt',
