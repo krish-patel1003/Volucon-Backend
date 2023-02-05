@@ -19,7 +19,7 @@ class VolunteerProfileView(APIView):
     def get(self, request, format=None):
         data = VolunteerProfile.objects.all()
         serializer = self.serializer_class(data, many=True)
-        return Response({"data":data, "msg":"all volunteers"}, status=status.HTTP_200_OK)
+        return Response({"data":serializer.data, "msg":"all volunteers"}, status=status.HTTP_200_OK)
     
     def post(self, request, format=None):
         data = request.data

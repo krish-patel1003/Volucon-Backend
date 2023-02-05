@@ -9,17 +9,25 @@ from .permissions import IsUserItself, IsOwnerOrg
 from users.models import User
 from rest_framework.decorators import permission_classes
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
+from django_filters import rest_framework as dj_filters
+from rest_framework import filters
+from .filters import EventFilter
 
 # Create your views here.
 
 class OrgProfileView(APIView):
     serializer_class = OrgProfileSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = (dj_filters.DjangoFilterBackend, filters.SearchFilter, )
+    filterset_fields = ('location',)
+    search_fields = ('event_name', 'description',)
+    filterset_class = EventFilter
 
     def get(self, request, format=None):
-        data = Organization.objects.all()
-        serializer = self.serializer_class(data, many=True)
-        return Response({"data":serializer.data, "msg":"all orgs"}, status=status.HTTP_200_OK)
+        data = Event.objects.all()
+        filter_data = EventFilter(request.GET, queryset=data)
+        # serializer = self.serializer_class(filter_data.qs, many=True)
+        return Response({"data":filter_data, "msg":"all orgs"}, status=status.HTTP_200_OK)
 
     def post(self, request, format=None):
         data = request.data
@@ -86,8 +94,7 @@ class EventUpdateView(APIView):
         return Response({"data":serializer.data, "msg":"Event"}, status=status.HTTP_200_OK)
 
     def patch(self, request, event_id):
-        org = Organization.objects.get(user=request.user)
-        event = Event.objects.get(id=event_id, organization=org)
+        event = Event.objects.get(id=event_id)
         serializer = EventSerializer(
             event, data=request.data, partial=True)
         if serializer.is_valid():

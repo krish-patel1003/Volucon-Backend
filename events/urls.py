@@ -1,6 +1,5 @@
 from django.urls import path
-from .views import show_vol_info
-
+from .views import *
 urlpatterns = [
-    path('vol-info/', show_vol_info, name='vol-info'),
+    path('recommended/', RecommendedEvents.as_view(), name="volinfo"),
 ]
